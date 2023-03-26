@@ -1,5 +1,6 @@
 var currentDay = $("#currentDay")
 
+// add current date on top of page
 function displayTime(){
   var today = dayjs();
   $(currentDay).text(today.format("dddd, MMMM D YYYY"));
@@ -22,18 +23,19 @@ function renderTasks(){
     17: ""
   };
 
+  // create an array for how the hours will show on the website, and another one to compare with the current hour as integers
   var businessHoursInt = [9, 10, 11, 12, 13, 14, 15, 16, 17]
   var businessHours = ["9AM", "10AM", "11AM", "12PM", "1PM", "2PM", "3PM", "4PM", "5PM"]
 
   var currentHour = dayjs().hour();
   var currentHourInt = parseInt(currentHour);
 
+  var container = $("#container");
 
   for (var i=0; i<businessHours.length; i++){
     // for each element of the array, so each business hour
     // create a div which is my row, with 3 columns, one for the time, one for the description, one for the save button
     // add the classes for each, and append to the container 
-    var container = $("#container");
 
     var rowSchedule = $("<div>");
     rowSchedule.addClass("row time-block")
@@ -69,6 +71,7 @@ function renderTasks(){
     // console.log("currentHourInt", currentHourInt, typeof currentHourInt);
     // console.log("businessHoursInt[i]", businessHoursInt[i], typeof businessHoursInt[i])
 
+// compare current time with the hour mentioned on each row
     if (currentHourInt === businessHoursInt[i]) {
       rowSchedule.addClass("present");
   
@@ -85,11 +88,11 @@ function renderTasks(){
     
 }
 
-
+// local storage
 $("#container").on("click", ".saveBtn", function(event){
   event.preventDefault();
 
-  var textValue = $(this).siblings(".description").val()
+  var textValue = $(this).siblings(".description").val() 
   var hourId = $(this).parent().attr("id");
 
   var hoursTextObj = JSON.parse(localStorage.getItem("hoursTextObj")) || {
@@ -107,7 +110,7 @@ $("#container").on("click", ".saveBtn", function(event){
   hoursTextObj[hourId] = textValue;
 
   localStorage.setItem("hoursTextObj", JSON.stringify(hoursTextObj));
-  renderTasks();
+  //renderTasks();
 })
 
 
